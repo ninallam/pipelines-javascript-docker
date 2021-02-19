@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: ninallampipelinesjavascriptdocker 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ninallampipelinesjavascriptdocker
+  template:
+    metadata:
+      labels:
+        app: ninallampipelinesjavascriptdocker 
+    spec:
+      containers:
+        - name: ninallampipelinesjavascriptdocker 
+          image: nikitacontainer.azurecr.io/ninallampipelinesjavascriptdocker
+          ports:
+          - containerPort: 8080
