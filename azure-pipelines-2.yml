@@ -4,8 +4,8 @@
 
 resources:
   pipelines:
-  - pipeline: cipipeline   # Name of the pipeline resource
-    source: ninallam.pipelines-javascript-docker(1) 
+  - pipeline: cipipeline
+    source: ninallam.pipelines-javascript-docker (1)
     trigger: 
       branches:
       - main
