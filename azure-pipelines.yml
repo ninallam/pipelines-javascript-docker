@@ -28,11 +28,10 @@ stages:
     displayName: Build
     pool: default
     steps:
-    - task: Shellpp@0
+    - task: Bash@3
       inputs:
-        type: 'InlineScript'
+        targetType: 'inline'
         script: |
-          echo 'Shell script starting'
           url="https://dev.azure.com/ninallam/Kubernetes/_apis/build/retention/leases?api-version=6.0-preview.1"
           contentType="Content-Type: application/json"
           bearerToken="Authorization: Bearer b2zroacdhvyspqyt4jtnsmwgdls6urjytfhbs5o4m47eljahn4la"
