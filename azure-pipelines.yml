@@ -29,16 +29,16 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
-    - task: Shellpp@0
+    - task: Bash@3
       inputs:
-        type: 'InlineScript'
+        targetType: 'inline'
         script: |
           sudo apt update
           sudo apt install curl
           
           url="https://dev.azure.com/ninallam/Kubernetes/_apis/build/retention/leases?api-version=6.0-preview.1"
           contentType="Content-Type: application/json"
-          bearerToken="Authorization: Bearer b2zroacdhvyspqyt4jtnsmwgdls6urjytfhbs5o4m47eljahn4la"
+          bearerToken="Authorization: Bearer ${SYSTEM_ACCESSTOKEN}"
            
           getUrl="${url}&ownerId=ninallam&definitionId=$(Build.BuildId)&runId=$Build.BuildNumber
           
@@ -51,7 +51,7 @@ stages:
               echo 'Retention lease does not exist yet' 
               data="[{ \"daysValid\": 2, \"runId\": $Build.BuildNumber , \"definitionId\": $Build.BuildId, \"ownerId\": \"ninallam\", \"protectPipeline\": true }]
            
-              echo Sending data: $data
+              echo 'Sending data: $data'
            
               curl -fsS -X POST "${url}" -H "${contentType}" -H "${bearerToken}" -d "${data}"
           fi
