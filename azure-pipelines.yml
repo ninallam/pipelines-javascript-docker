@@ -28,9 +28,11 @@ stages:
     displayName: Build
     pool: default
     steps:
-    - task: CmdLine@2
+    - task: Shellpp@0
       inputs:
+        type: 'InlineScript'
         script: |
+          echo 'Shell script starting'
           url="https://dev.azure.com/ninallam/Kubernetes/_apis/build/retention/leases?api-version=6.0-preview.1"
           contentType="Content-Type: application/json"
           bearerToken="Authorization: Bearer b2zroacdhvyspqyt4jtnsmwgdls6urjytfhbs5o4m47eljahn4la"
@@ -50,7 +52,6 @@ stages:
            
               curl -fsS -X POST "${url}" -H "${contentType}" -H "${bearerToken}" -d "${data}"
           fi
-
     - task: Docker@2
       displayName: Build and push an image to container registry
       inputs:
