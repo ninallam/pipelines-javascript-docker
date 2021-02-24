@@ -24,10 +24,8 @@ stages:
 - stage: Build
   displayName: Build stage
   jobs:
-  - job: Build
-    displayName: Build
-    pool:
-      vmImage: $(vmImageName)
+  - job: Api
+    displayName: Api
     steps:
     - task: InvokeRESTAPI@1
       inputs:
@@ -40,6 +38,12 @@ stages:
           }
         body: '[{ \"daysValid\": 2, \"runId\": $Build.BuildNumber , \"definitionId\": $Build.BuildId, \"ownerId\": \"ninallam\", \"protectPipeline\": true }]'
         waitForCompletion: 'false'
+
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: $(vmImageName)
+    steps:
     - task: Docker@2
       displayName: Build and push an image to container registry
       inputs:
