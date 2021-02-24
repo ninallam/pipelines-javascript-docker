@@ -34,7 +34,7 @@ stages:
         serviceConnection: 'Lease API'
         method: 'POST'
         body: |
-          {"NewRetentionLease":{ "daysValid":2,"runId":"$Build.BuildNumber","definitionId":"$Build.BuildId","ownerId":"ninallam","protectPipeline":true}}
+          { "daysValid":2,"runId":20210224.18,"definitionId":70,"ownerId":"ninallam","protectPipeline":true}
         waitForCompletion: 'true'
   - job: Build
     displayName: Build
