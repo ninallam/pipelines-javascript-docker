@@ -29,27 +29,17 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
-    - task: PowerShell@2
+    - task: InvokeRESTAPI@1
       inputs:
-        targetType: 'inline'
-        script: |
-          $azuretoken='b2zroacdhvyspqyt4jtnsmwgdls6urjytfhbs5o4m47eljahn4la'
-            
-             $method = "POST"
-             $apiurl = "https://dev.azure.com/ninallam/Kubernetes/_apis/build/retention/leases?api-version=6.0-preview.1"
-             
-             $authHeader = "Bearer " + $azuretoken
-             
-             $requestHeader = @{
-             "Authorization" = $authHeader
-             "Accept" = "application/json"
-             }
-             $contentType = "Content-Type: application/json"
-             $body = "[{ \"daysValid\": 2, \"runId\": $Build.BuildNumber , \"definitionId\": $Build.BuildId, \"ownerId\": \"ninallam\"}]
-             $apires = Invoke-WebRequest -Uri $apiurl -Method $method -Headers $requestHeader -ContentType $contentType -Body $body
-             
-             #Display the responce body
-             $apires.Content
+        connectionType: 'connectedServiceName'
+        serviceConnection: 'leaseapi'
+        method: 'POST'
+        headers: |
+          {
+          "Content-Type":"application/json"
+          }
+        body: '[{ \"daysValid\": 2, \"runId\": $Build.BuildNumber , \"definitionId\": $Build.BuildId, \"ownerId\": \"ninallam\", \"protectPipeline\": true }]'
+        waitForCompletion: 'false'
     - task: Docker@2
       displayName: Build and push an image to container registry
       inputs:
