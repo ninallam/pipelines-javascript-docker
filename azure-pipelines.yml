@@ -39,7 +39,7 @@ stages:
           sudo apt install curl
           url="https://dev.azure.com/ninallam/Kubernetes/_apis/build/retention/leases?api-version=6.0-preview.1"
           contentType="Content-Type: application/json"
-          bearerToken="Authorization: Bearer ${SYSTEM_ACCESSTOKEN}"
+          bearerToken="Authorization: Bearer $env:{SYSTEM_ACCESSTOKEN}"
           getUrl="${url}&ownerId=ninallam&definitionId=$(Build.BuildId)&runId=$Build.BuildNumber
           json=$(curl -fsS "${getUrl}" -H "${bearerToken}")
           count=$(echo $json | jq '.count')
