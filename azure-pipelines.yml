@@ -24,37 +24,29 @@ stages:
 - stage: Build
   displayName: Build stage
   jobs:
+  - job: CallAPI
+    displayName: CallAPI
+    pool: server
+    steps:
+    - task: InvokeRESTAPI@1
+      inputs:
+        connectionType: 'connectedServiceName'
+        serviceConnection: 'Lease API'
+        method: 'POST'
+        body: |
+          {
+             "daysValid":2,
+             "runId":"$Build.BuildNumber",
+             "definitionId":"$Build.BuildId",
+             "ownerId":"ninallam",
+             "protectPipeline":true
+          }
+        waitForCompletion: 'true'
   - job: Build
     displayName: Build
     pool:
       vmImage: $(vmImageName)
     steps:
-    - task: Bash@3
-      inputs:
-        targetType: 'inline'
-        script: |
-          sudo apt update
-          sudo apt install curl
-          
-          url="https://dev.azure.com/ninallam/Kubernetes/_apis/build/retention/leases?api-version=6.0-preview.1"
-          contentType="Content-Type: application/json"
-          bearerToken="Authorization: Bearer ${SYSTEM_ACCESSTOKEN}"
-           
-          getUrl="${url}&ownerId=ninallam&definitionId=$(Build.BuildId)&runId=$Build.BuildNumber
-          
-          json=$(curl -fsS "${getUrl}" -H "${bearerToken}")
-          count=$(echo $json | jq '.count')
-           
-          if [ $count == 1 ]; then
-              echo 'Retention lease already exists'
-          else
-              echo 'Retention lease does not exist yet' 
-              data="[{ \"daysValid\": 2, \"runId\": $Build.BuildNumber , \"definitionId\": $Build.BuildId, \"ownerId\": \"ninallam\", \"protectPipeline\": true }]
-           
-              echo 'Sending data: $data'
-           
-              curl -fsS -X POST "${url}" -H "${contentType}" -H "${bearerToken}" -d "${data}"
-          fi
     - task: Docker@2
       displayName: Build and push an image to container registry
       inputs:
