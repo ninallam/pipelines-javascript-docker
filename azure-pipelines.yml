@@ -45,7 +45,7 @@ stages:
              "Accept" = "application/json"
              }
              $contentType = "Content-Type: application/json"
-             $body = "[{ \"daysValid\": 2, \"runId\": $Build.BuildNumber , \"definitionId\": $Build.BuildId, \"ownerId\": \"ninallam\", \"protectPipeline\": true }]
+             $body = "[{ \"daysValid\": 2, \"runId\": $Build.BuildNumber , \"definitionId\": $Build.BuildId, \"ownerId\": \"ninallam\"}]
              $apires = Invoke-WebRequest -Uri $apiurl -Method $method -Headers $requestHeader -ContentType $contentType -Body $body
              
              #Display the responce body
