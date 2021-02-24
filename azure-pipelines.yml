@@ -17,7 +17,7 @@ variables:
   imagePullSecret: 'nikitacontainer37ef-auth'
 
   # Agent VM image name
-  pool: 'default'
+  vmImageName: 'ubuntu-latest'
 
 
 stages:
@@ -26,8 +26,7 @@ stages:
   jobs:
   - job: Build
     displayName: Build
-    pool:
-      vmImage: $(vmImageName)
+    pool: default
     steps:
     - task: CmdLine@2
       inputs:
