@@ -26,6 +26,7 @@ stages:
   jobs:
   - job: Api
     displayName: Api
+    pool: server
     steps:
     - task: InvokeRESTAPI@1
       inputs:
