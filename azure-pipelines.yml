@@ -29,9 +29,12 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
-    - bash: echo This script could use $SYSTEM_ACCESSTOKEN
+    - task: Bash@3
       env:
         SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+      inputs:
+        targetType: 'inline'
+        script: |
           sudo apt update
           sudo apt install curl
           url="https://dev.azure.com/ninallam/Kubernetes/_apis/build/retention/leases?api-version=6.0-preview.1"
