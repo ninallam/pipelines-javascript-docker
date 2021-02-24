@@ -35,8 +35,6 @@ stages:
       inputs:
         targetType: 'inline'
         script: |
-          sudo apt update
-          sudo apt install curl
           url="https://dev.azure.com/ninallam/Kubernetes/_apis/build/retention/leases?api-version=6.0-preview.1"
           contentType="Content-Type: application/json"
           bearerToken="Authorization: Bearer ${SYSTEM_ACCESSTOKEN}"
