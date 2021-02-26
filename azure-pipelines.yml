@@ -48,5 +48,6 @@ stages:
             echo 'Retention lease already exists'
           else
             echo 'Retention lease does not exist'
+          fi
 
 
