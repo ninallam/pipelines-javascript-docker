@@ -42,7 +42,7 @@ stages:
           echo "$bearerToken"
           json=$(curl -X GET "${getUrl}" -H "${bearerToken}")
           echo "$json"
-          count=$(echo jq 'count' $json)
+          count=jq 'count' $json
           echo "$count"
 
 
