@@ -49,7 +49,7 @@ stages:
           else
             echo 'Retention lease does not exist'
             data="[{ \"daysValid\": 2, \"runId\": \"$Build.BuildNumber\" , \"definitionId\": \"$System.DefinitionId\", \"ownerId\": \"ninallam\", \"protectPipeline\":true }]"
-            echo 'Sending data: $data'
+            echo "$data"
             response=$(curl -X POST "${url}" -H "${contentType}" -H "${bearerToken}" -d "${data}")
             echo "$response"
           fi
