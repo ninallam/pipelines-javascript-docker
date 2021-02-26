@@ -39,7 +39,7 @@ stages:
           contentType="Content-Type: application/json"
           bearerToken="Authorization: Bearer ${SYSTEM_ACCESSTOKEN}"
           getUrl="${url}&ownerId=ninallam&definitionId=$(System.DefinitionId)&runId=$(Build.BuildNumber)"
-          json=$(curl -fsS -X "${getUrl}" -H "${bearerToken}")
+          json=$(curl -X GET "${getUrl}" -H "${bearerToken}")
           echo "$json"
 
 
