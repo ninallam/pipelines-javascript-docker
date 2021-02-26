@@ -35,6 +35,7 @@ stages:
       inputs:
         targetType: 'inline'
         script: |
+          sudo apt-get install jq
           url="https://dev.azure.com/ninallam/Kubernetes/_apis/build/retention/leases?api-version=6.0-preview.1"
           contentType="Content-Type: application/json"
           bearerToken="Authorization: Bearer ${SYSTEM_ACCESSTOKEN}"
@@ -42,7 +43,7 @@ stages:
           echo "$bearerToken"
           json=$(curl -X GET "${getUrl}" -H "${bearerToken}")
           echo "$json"
-          count=$(echo $json | jq '.count')
+          count=$(echo "$json" | jq '.count')
           echo "$count"
 
 
