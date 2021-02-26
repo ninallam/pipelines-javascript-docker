@@ -44,5 +44,9 @@ stages:
           echo "$json"
           count=$(echo $json | jq '.count')
           echo "$count"
+          if [$count == 1]; then
+            echo 'Retention lease already exists'
+          else
+            echo 'Retention lease does not exist'
 
 
