@@ -40,15 +40,7 @@ stages:
           bearerToken="Authorization: Bearer ${SYSTEM_ACCESSTOKEN}"
           getUrl="${url}&ownerId=ninallam&definitionId=$(System.DefinitionId)&runId=$(Build.BuildNumber)"
           json=$(curl -fsS "${getUrl}" -H "${bearerToken}")
-          count=$(echo $json | jq '.count')
-          if [ $count == 1 ]; then
-              echo 'Retention lease already exists'
-          else
-              echo 'Retention lease does not exist yet'
-              data="[{ \"daysValid\": 2, \"runId\":\"$Build.BuildNumber\" , \"definitionId\": \"$System.DefinitionId\"", \"ownerId\": \"ninallam\", \"protectPipeline\": true }]
-              echo 'Sending data: $data'
-              curl -fsS -X POST "${url}" -H "${contentType}" -H "${bearerToken}" -d "${data}"
-          fi
+          echo $json
     - task: Docker@2
       displayName: Build and push an image to container registry
       inputs:
