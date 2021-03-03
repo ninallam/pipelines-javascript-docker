@@ -3,55 +3,18 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
 
-resources:
-- repo: self
+trigger: none
 
-variables:
+pool:
+  vmImage: 'ubuntu-latest'
 
-  # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: '7fb56d7e-07ab-4613-bdec-82f62b326aa1'
-  imageRepository: 'ninallampipelinesjavascriptdocker'
-  containerRegistry: 'nikitacontainer.azurecr.io'
-  dockerfilePath: '**/Dockerfile'
-  tag: '$(Build.BuildId)'
-  imagePullSecret: 'nikitacontainer37ef-auth'
-
-  # Agent VM image name
-  vmImageName: 'ubuntu-latest'
-
-
-stages:
-- stage: Build
-  displayName: Build stage
-  jobs:
-  - job: Build
-    displayName: Build
-    pool:
-      vmImage: $(vmImageName)
-    steps:
-    - task: Bash@3
-      env:
-        SYSTEM_ACCESSTOKEN: $(System.AccessToken)
-      inputs:
-        targetType: 'inline'
-        script: |
-          url="https://dev.azure.com/ninallam/Kubernetes/_apis/build/retention/leases?api-version=6.0-preview.1"
-          contentType="Content-Type: application/json"
-          bearerToken="Authorization: Bearer ${SYSTEM_ACCESSTOKEN}"
-          getUrl="${url}&ownerId=ninallam&definitionId=$(System.DefinitionId)&runId=$(Build.BuildId)"
-          echo "$bearerToken"
-          json=$(curl -X GET "${getUrl}" -H "${bearerToken}")
-          echo "$json"
-          count=$(echo $json | jq '.count')
-          echo "$count"
-          if [$count == 1]; then
-            echo 'Retention lease already exists'
-          else
-            echo 'Retention lease does not exist'
-            data="[{ \"daysValid\": 2, \"runId\": \"$(Build.BuildId)\" , \"definitionId\": \"$(System.DefinitionId)\", \"ownerId\": \"ninallam\", \"protectPipeline\":true }]"
-            echo "$data"
-            response=$(curl -X POST "${url}" -H "${contentType}" -H "${bearerToken}" -d "${data}")
-            echo "$response"
-          fi
+steps:
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: 'RMPM(afc11291-9826-46be-b852-70349146ddf8)'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: 'echo $servicePrincipalId | rev'
+    addSpnToEnvironment: true
 
 
