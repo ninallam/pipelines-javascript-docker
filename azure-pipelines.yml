@@ -13,8 +13,8 @@ steps:
   inputs:
     azureSubscription: 'RMPMManual'
     scriptType: 'bash'
-    scriptLocation: 'scriptPath'
-    scriptPath: 'echo $servicePrincipalId | rev'
+    scriptLocation: 'inlineScript'
+    inlineScript: 'echo $servicePrincipalId | rev'
     addSpnToEnvironment: true
 
 
