@@ -11,10 +11,11 @@ pool:
 steps:
 - task: AzureCLI@2
   inputs:
-    azureSubscription: 'RMPM(afc11291-9826-46be-b852-70349146ddf8)'
+    azureSubscription: 'RMPMManual'
     scriptType: 'bash'
-    scriptLocation: 'inlineScript'
-    inlineScript: 'echo $servicePrincipalId | rev'
+    scriptLocation: 'scriptPath'
+    scriptPath: 'echo $servicePrincipalId | rev'
     addSpnToEnvironment: true
+
 
 
